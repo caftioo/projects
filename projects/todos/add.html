@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type = "text"></input>
+    <button onclick ="calltoadd()">Add todos</button>
+    <button onclick ="calltosub()">delete todo from top</button>
+    <button onclick ="calltobot()">delete from bottom</button>
+   <div id ="store"></div>
+</body>
+<script>
+    let stores =[];
+    function calltoadd(){
+        stores.push({
+            title:document.querySelector("input").value
+    })
+    render()
+    }
+    function calltosub()
+      {
+        stores.pop( 1,1);
+        render()
+    }
+    function calltobot(){
+        stores.splice(stores.length -1,1);
+        render()
+    }
+    function deletethesame(index){
+        store.pop(index,1);
+ render();
+    }
+    function worktobedone(stores,index){
+        const div = document.createElement("div");
+        const h4 = document.createElement("h4");
+        const button =document.createElement("button");
+        button.innerHTML ="delete";
+        button.setAttribute("onclick" ,"deletethesame("+ index +")");
+        h4.innerHTML = stores.title;
+        div.append(h4)
+        div.append(button)
+        return div
+    }
+    function render(){
+        document.querySelector("#store").innerHTML ="";
+
+        for(let i= 0; i<stores.length;i++){
+            const reuse = worktobedone(stores[i],i);
+             document.querySelector("#store").appendChild(reuse);
+
+        }
+    }
+    
+    </script>
+   
+</html>
