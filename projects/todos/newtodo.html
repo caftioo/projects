@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <style>
+        <style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    #todo-input {
+        width: 60%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 10px;
+    }
+
+    button {
+        padding: 10px 15px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 5px 0;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    #store {
+        margin-top: 20px;
+    }
+
+    #store div {
+        background-color: white;
+        border: 1px solid #ddd;
+        padding: 10px 15px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    #store h4 {
+        margin: 0;
+        font-size: 18px;
+        color: #333;
+    }
+
+    #store button {
+        background-color: #dc3545;
+    }
+
+    #store button:hover {
+        background-color: #c82333;
+    }
+</style>
+
+    </style>
+</head>
+<body>
+    <input type="text" id="todo-input">
+    <button onclick="calltoadd()">Add todos</button>
+    <!-- <button onclick="calltosub()">Delete todo from top</button>
+    <button onclick="calltobot()">Delete from bottom</button> -->
+    <div id="store"></div>
+</body>
+<script>
+    let stores = [];
+
+    function calltoadd() {
+        const inputElement = document.getElementById("todo-input");
+        const todoText = inputElement.value.trim();
+        if (todoText) {
+            stores.push({ title: todoText });
+            inputElement.value = ""; // Clear the input field
+            render();
+        }
+    }
+
+    function calltosub() {
+        if (stores.length > 0) {
+            stores.shift(); // Correctly removes the first item
+            render();
+        }
+    }
+
+    function calltobot() {
+        if (stores.length > 0) {
+            stores.pop(); // Correctly removes the last item
+            render();
+        }
+    }
+
+    function deletethesame(index) {
+        stores.splice(index, 1); // Fix: Use stores array and splice method
+        render();
+    }
+
+    // function worktobedone(todo, index) {
+    //     const div = document.createElement("div");
+    //     const h4 = document.createElement("h4");
+    //     const button = document.createElement("button");
+    //       const button2 = document.createElement("button")
+    //     button.innerHTML = "delete";
+    //       button2.innerHTML = "Edit ";
+    //     button.setAttribute("onclick", "deletethesame(" + index + ")");
+    //     button2.setAttribute("onclick", "editBottomTodo(" + index + ")");
+        
+    //     h4.innerHTML = todo.title;
+        
+    //     div.append(h4);
+    //     div.append(button);
+    //        div.append(button2);
+        
+    //     return div;
+    // }
+
+    function worktobedone(todo, index) {
+    const div = document.createElement("div");
+    const h4 = document.createElement("h4");
+    const deleteButton = document.createElement("button");
+    const editButton = document.createElement("button");
+
+    h4.innerHTML = todo.title;
+
+    deleteButton.innerHTML = "Delete";
+    deleteButton.onclick = () => deletethesame(index);
+
+    editButton.innerHTML = "Edit";
+    editButton.onclick = () => editTodo(index);
+    editButton.className = "edit-button"; // Optional: for styling
+
+    div.appendChild(h4);
+    div.appendChild(editButton);
+    div.appendChild(deleteButton);
+
+    return div;
+}
+
+
+    function render() {
+        document.querySelector("#store").innerHTML = "";
+        for (let i = 0; i < stores.length; i++) {
+            const reuse = worktobedone(stores[i], i);
+            document.querySelector("#store").appendChild(reuse);
+        }
+    }
+
+  function editTodo(index) {
+    const currentTitle = stores[index].title;
+    const newTitle = prompt("Edit todo:", currentTitle);
+    if (newTitle !== null && newTitle.trim() !== "") {
+        stores[index].title = newTitle.trim();
+        render();
+    }
+}
+
+</script>
+</html>
